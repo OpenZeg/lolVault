@@ -1,6 +1,6 @@
-# .lol Vault v2
+# .lol Vault v1
 
-.lol Vault v2 is a secure, offline client-side encryption tool built as a single HTML file.  
+.lol Vault v1 is a secure, offline client-side encryption tool built as a single HTML file.  
 
 It uses **AES-256-GCM** with **PBKDF2 (250,000 iterations)** and optional **keyfile 2FA**. Encrypt images, videos, and any files locally — no server, no tracking, no data leaving your device.
 
