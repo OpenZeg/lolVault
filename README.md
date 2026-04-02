@@ -1,12 +1,31 @@
-# .lol Vault v1
+# .lol Vault v2
 
-.lol Vault v1 is a secure, offline client-side encryption tool built as a single HTML file.  
+.lol Vault v2 is a secure, offline client-side encryption tool built as a **single HTML file**.
 
-It uses **AES-256-GCM** with **PBKDF2 (250,000 iterations)** and optional **keyfile 2FA**. Encrypt images, videos, and any files locally — no server, no tracking, no data leaving your device.
+It uses **AES-256-GCM** with **PBKDF2 (250,000 iterations)** and optional **keyfile 2FA**.  
+Encrypt images, videos, and any files locally — no server, no tracking, no data leaving your device.
 
 Strong, simple, and fully auditable.
 
 ---
 
-**Note:**  
-You can try it online at [style.zeg.com.au/lol](https://style.zeg.com.au/lol), but it is **strongly recommended** to download and run it from GitHub if you have any trust or security concerns.
+### Try It
+- **Online demo**: [style.zeg.com.au/lol](https://style.zeg.com.au/lol)  
+- **Recommended**: Download from GitHub and run offline for maximum security.
+
+### Features
+- AES-256-GCM authenticated encryption
+- PBKDF2 key derivation (250k iterations)
+- Optional keyfile as second factor
+- Batch encryption support
+- Media preview after decryption
+- Custom `.lol` binary format
+- Completely client-side & offline
+
+### Security Note
+This tool is only as strong as your passphrase and keyfile handling. Always use a strong unique passphrase and keep your keyfile separate.
+
+---
+
+**License**  
+Apache License 2.0 (with credit requested)
