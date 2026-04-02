@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.lol Vault v2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;1,400&family=Syne:wght@400;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #080a0f;
+            --s1: #0e1118;
+            --s2: #141820;
+            --s3: #1a2030;
+            --b1: #1e2534;
+            --b2: #2a3448;
+            --b3: #3a4a62;
+            --acc: #00e5b0;
+            --acc2: #0096ff;
+            --acc3: #a78bfa;
+            --text: #e2e8f4;
+            --muted: #4a5a74;
+            --muted2: #6a7a94;
+            --danger: #ff4757;
+            --warn: #f59e0b;
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            line-height: 1.6
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(to bottom, transparent 0, transparent 3px, rgba(0, 0, 0, 0.1) 3px, rgba(0, 0, 0, 0.1) 4px);
+            pointer-events: none;
+            z-index: 9999
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0, 229, 176, 0.06) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0
+        }
+
+        .app {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 48px 24px 100px;
+            position: relative;
+            z-index: 1
+        }
+
+       
+        .hdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 16px
+        }
+
+        .logo {
+            display: flex;
+            align-items: baseline;
+            gap: 10px
+        }
+
+        .logo-ext {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 38px;
+            font-weight: 600;
+            color: var(--acc);
+            letter-spacing: -2px;
+            line-height: 1
+        }
+
+        .logo-word {
+            font-family: 'Syne', sans-serif;
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1
+        }
+
+        .logo-v {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            padding: 2px 6px;
+            border: 1px solid var(--b2);
+            border-radius: 4px;
+            margin-left: 4px;
+            letter-spacing: 0.06em;
+            align-self: center
+        }
+
+        .kbd-hints {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .kbd {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted2);
+            background: var(--s1);
+            border: 1px solid var(--b1);
+            border-radius: 4px;
+            padding: 3px 7px;
+            letter-spacing: 0.04em
+        }
+
+        .kbd b {
+            color: var(--acc);
+            font-weight: 600
+        }
+
+      
+        .badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 32px
+        }
+
+        .badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 3px;
+            letter-spacing: 0.06em
+        }
+
+        .badge.g {
+            color: var(--acc);
+            border: 1px solid rgba(0, 229, 176, 0.2);
+            background: rgba(0, 229, 176, 0.05)
+        }
+
+        .badge.b {
+            color: var(--acc2);
+            border: 1px solid rgba(0, 150, 255, 0.2);
+            background: rgba(0, 150, 255, 0.05)
+        }
+
+        .badge.p {
+            color: var(--acc3);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            background: rgba(167, 139, 250, 0.05)
+        }
+
+        .badge.n {
+            color: var(--muted2);
+            border: 1px solid var(--b1);
+            background: var(--s1)
+        }
+
+      
+        .tabs {
+            display: flex;
+            gap: 2px;
+            background: var(--s1);
+            border: 1px solid var(--b1);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 28px
+        }
+
+        .tab {
+            flex: 1;
+            padding: 11px 6px;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            border-radius: 9px;
+            cursor: pointer;
+            color: var(--muted);
+            border: none;
+            background: transparent;
+            transition: all .18s;
+            white-space: nowrap
+        }
+
+        .tab.active {
+            background: var(--s2);
+            color: var(--acc);
+            border: 1px solid rgba(0, 229, 176, 0.18)
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--text)
+        }
+
+        /* Panel */
+        .panel {
+            display: none;
+            animation: fadeUp .2s ease
+        }
+
+        .panel.active {
+            display: block
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+       
+        .drop {
+            border: 1.5px dashed var(--b2);
+            border-radius: 14px;
+            padding: 44px 32px;
+            text-align: center;
+            cursor: pointer;
+            background: var(--s1);
+            transition: all .18s;
+            position: relative;
+            overflow: hidden
+        }
+
+        .drop:hover,
+        .drop.over {
+            border-color: var(--acc);
+            background: rgba(0, 229, 176, 0.03)
+        }
+
+        .drop input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%
+        }
+
+        .drop-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 10px;
+            line-height: 1
+        }
+
+        .drop-t {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .drop-s {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 0.04em
+        }
+
+      
+        .queue {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .q-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: var(--s2);
+            border: 1px solid var(--b1);
+            border-radius: 8px;
+            transition: border-color .18s
+        }
+
+        .q-item.done {
+            border-color: rgba(0, 229, 176, 0.3)
+        }
+
+        .q-item.err {
+            border-color: rgba(255, 71, 87, 0.3)
+        }
+
+        .q-item.busy {
+            border-color: rgba(0, 150, 255, 0.3)
+        }
+
+        .q-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 6px;
+            background: var(--s3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0
+        }
+
+        .q-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1
+        }
+
+        .q-size {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            flex-shrink: 0
+        }
+
+        .q-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 3px;
+            flex-shrink: 0
+        }
+
+        .q-status.pending {
+            color: var(--muted2);
+            background: var(--s3)
+        }
+
+        .q-status.busy {
+            color: var(--acc2);
+            background: rgba(0, 150, 255, 0.1)
+        }
+
+        .q-status.done {
+            color: var(--acc);
+            background: rgba(0, 229, 176, 0.1)
+        }
+
+        .q-status.err {
+            color: var(--danger);
+            background: rgba(255, 71, 87, 0.1)
+        }
+
+        .q-del {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 14px;
+            padding: 4px;
+            flex-shrink: 0;
+            line-height: 1
+        }
+
+        .q-del:hover {
+            color: var(--danger)
+        }
+
+        
+        .field {
+            margin-top: 18px
+        }
+
+        .field-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px
+        }
+
+        .field-label-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase
+        }
+
+        .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--acc);
+            flex-shrink: 0
+        }
+
+        .dot.opt {
+            background: var(--muted)
+        }
+
+        .field-actions {
+            display: flex;
+            gap: 6px
+        }
+
+        .fa-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted2);
+            background: var(--s2);
+            border: 1px solid var(--b1);
+            border-radius: 4px;
+            padding: 3px 8px;
+            cursor: pointer;
+            letter-spacing: 0.04em;
+            transition: all .15s
+        }
+
+        .fa-btn:hover {
+            color: var(--acc);
+            border-color: rgba(0, 229, 176, 0.3)
+        }
+
+        
+        .inp-wrap {
+            position: relative;
+            display: flex;
+            align-items: center
+        }
+
+        .inp-wrap input[type="password"],
+        .inp-wrap input[type="text"],
+        .inp-txt,
+        textarea.inp-ta {
+            width: 100%;
+            background: var(--s1);
+            border: 1px solid var(--b2);
+            border-radius: 8px;
+            padding: 12px 48px 12px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text);
+            outline: none;
+            transition: border-color .15s;
+            letter-spacing: 0.04em
+        }
+
+        .inp-txt {
+            padding-right: 16px
+        }
+
+        textarea.inp-ta {
+            padding: 12px 16px;
+            resize: vertical;
+            min-height: 72px;
+            font-size: 12px;
+            line-height: 1.5
+        }
+
+        .inp-wrap input:focus,
+        .inp-txt:focus,
+        textarea.inp-ta:focus {
+            border-color: var(--acc);
+            box-shadow: 0 0 0 3px rgba(0, 229, 176, 0.07)
+        }
+
+        .inp-wrap input::placeholder,
+        textarea::placeholder {
+            color: var(--muted);
+            letter-spacing: 0.02em
+        }
+
+        .inp-icon-btn {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 14px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1
+        }
+
+        .inp-icon-btn:hover {
+            color: var(--text)
+        }
+
+        
+        .keyfile-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted2);
+            cursor: pointer;
+            padding: 10px 0;
+            user-select: none;
+            width: fit-content
+        }
+
+        .keyfile-toggle:hover {
+            color: var(--text)
+        }
+
+        .toggle-arrow {
+            transition: transform .2s;
+            font-size: 10px
+        }
+
+        .toggle-arrow.open {
+            transform: rotate(90deg)
+        }
+
+        .keyfile-body {
+            display: none;
+            margin-top: 2px
+        }
+
+        .keyfile-body.open {
+            display: block
+        }
+
+        .kf-info {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            padding: 8px 12px;
+            background: var(--s2);
+            border-radius: 6px;
+            margin-top: 8px;
+            line-height: 1.6;
+            border-left: 2px solid var(--b2)
+        }
+
+        .kf-file-info {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(167, 139, 250, 0.06);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            border-radius: 6px;
+            margin-top: 8px
+        }
+
+        .kf-file-info.show {
+            display: flex
+        }
+
+        .kf-fname {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--acc3);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .kf-clear {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 12px
+        }
+
+        .kf-clear:hover {
+            color: var(--danger)
+        }
+
+    
+        .strength-bar {
+            height: 2px;
+            background: var(--s3);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden
+        }
+
+        .strength-fill {
+            height: 100%;
+            border-radius: 2px;
+            transition: width .3s, background .3s;
+            width: 0%
+        }
+
+        .strength-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 5px
+        }
+
+        .strength-lbl {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+        .entropy-lbl {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted)
+        }
+
+       
+        .divider {
+            height: 1px;
+            background: var(--b1);
+            margin: 24px 0
+        }
+
+       
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all .18s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px
+        }
+
+        .btn-primary {
+            background: var(--acc);
+            color: #000
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            filter: brightness(1.1);
+            transform: translateY(-1px)
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0)
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+            filter: none
+        }
+
+        .btn-secondary {
+            background: var(--s2);
+            color: var(--text);
+            border: 1px solid var(--b2);
+            margin-top: 10px
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--b3);
+            background: var(--s3)
+        }
+
+        .btn-danger {
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 71, 87, 0.2)
+        }
+
+        .btn-danger:hover {
+            background: rgba(255, 71, 87, 0.15)
+        }
+
+        
+        .prog {
+            margin-top: 18px;
+            display: none
+        }
+
+        .prog.show {
+            display: block
+        }
+
+        .prog-track {
+            height: 3px;
+            background: var(--s3);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px
+        }
+
+        .prog-fill {
+            height: 100%;
+            background: var(--acc);
+            border-radius: 3px;
+            transition: width .3s
+        }
+
+        .prog-lbl {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center
+        }
+
+        
+        .batch-prog {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--s2);
+            border: 1px solid var(--b1);
+            border-radius: 8px;
+            margin-top: 12px;
+            display: none
+        }
+
+        .batch-prog.show {
+            display: flex
+        }
+
+        .bp-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--muted2)
+        }
+
+        .bp-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--acc);
+            margin-left: auto
+        }
+
+        /* Status */
+        .status {
+            margin-top: 14px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            display: none;
+            gap: 10px;
+            line-height: 1.5
+        }
+
+        .status.show {
+            display: flex
+        }
+
+        .status.ok {
+            background: rgba(0, 229, 176, 0.06);
+            border: 1px solid rgba(0, 229, 176, 0.18);
+            color: var(--acc)
+        }
+
+        .status.err {
+            background: rgba(255, 71, 87, 0.06);
+            border: 1px solid rgba(255, 71, 87, 0.18);
+            color: var(--danger)
+        }
+
+        .status.info {
+            background: rgba(0, 150, 255, 0.06);
+            border: 1px solid rgba(0, 150, 255, 0.18);
+            color: var(--acc2)
+        }
+
+        .status-ico {
+            flex-shrink: 0;
+            font-size: 14px
+        }
+
+        /* Viewer */
+        .viewer {
+            margin-top: 22px;
+            display: none
+        }
+
+        .viewer.show {
+            display: block
+        }
+
+        .viewer-hdr {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .viewer-hdr::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--b1)
+        }
+
+        #media-box {
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--s1);
+            border: 1px solid var(--b2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px
+        }
+
+        #media-box img,
+        #media-box video {
+            max-width: 100%;
+            max-height: 560px;
+            display: block;
+            border-radius: 12px
+        }
+
+        
+        .meta {
+            margin-top: 10px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 4px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px
+        }
+
+        .mk {
+            color: var(--muted)
+        }
+
+        .mv {
+            color: var(--acc);
+            word-break: break-all
+        }
+
+        .mv.warn {
+            color: var(--warn)
+        }
+
+        .mv.desc {
+            color: var(--text);
+            font-style: italic
+        }
+
+        /* Recent panel */
+        .recent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .r-item {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 4px 12px;
+            padding: 14px 16px;
+            background: var(--s1);
+            border: 1px solid var(--b1);
+            border-radius: 10px;
+            transition: border-color .15s
+        }
+
+        .r-item:hover {
+            border-color: var(--b2)
+        }
+
+        .r-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--acc);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .r-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            text-align: right
+        }
+
+        .r-orig {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted2)
+        }
+
+        .r-badges {
+            display: flex;
+            gap: 5px;
+            margin-top: 4px
+        }
+
+        .r-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid var(--b1);
+            color: var(--muted2);
+            background: var(--s2)
+        }
+
+        .r-badge.kf {
+            color: var(--acc3);
+            border-color: rgba(167, 139, 250, 0.2);
+            background: rgba(167, 139, 250, 0.06)
+        }
+
+        .r-desc {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted2);
+            font-style: italic;
+            grid-column: 1/-1;
+            margin-top: 2px
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 52px 20px;
+            color: var(--muted)
+        }
+
+        .empty-ico {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 12px
+        }
+
+        .empty-t {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px
+        }
+
+        .empty-s {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px
+        }
+
+        /* Spec */
+        .spec {
+            margin-top: 56px;
+            padding-top: 28px;
+            border-top: 1px solid var(--b1)
+        }
+
+        .spec-t {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 14px
+        }
+
+        .hex-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px
+        }
+
+        .hb {
+            background: var(--s1);
+            border: 1px solid var(--b1);
+            border-radius: 8px;
+            padding: 11px 14px
+        }
+
+        .hb-bytes {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--acc);
+            margin-bottom: 3px;
+            letter-spacing: 0.06em
+        }
+
+        .hb-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text);
+            margin-bottom: 2px
+        }
+
+        .hb-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            line-height: 1.4
+        }
+
+        
+        .notice {
+            padding: 10px 14px;
+            background: rgba(245, 158, 11, 0.07);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 7px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--warn);
+            margin-top: 12px;
+            line-height: 1.5;
+            display: none
+        }
+
+        .notice.show {
+            display: block
+        }
+
+        @media(max-width:520px) {
+
+            .logo-ext,
+            .logo-word {
+                font-size: 28px
+            }
+
+            .app {
+                padding: 24px 14px 60px
+            }
+
+            .tabs {
+                overflow-x: auto
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+        
+        <div class="hdr">
+            <div class="logo">
+                <span class="logo-ext">.lol</span>
+                <span class="logo-word">Vault</span>
+                <span class="logo-v">v2.0</span>
+            </div>
+            <div class="kbd-hints">
+                <span class="kbd"><b>Ctrl+E</b> Encrypt</span>
+                <span class="kbd"><b>Ctrl+D</b> Decrypt</span>
+                <span class="kbd"><b>Ctrl+R</b> Recent</span>
+            </div>
+        </div>
+
+        <div class="badges">
+            <span class="badge g">AES-256-GCM</span>
+            <span class="badge g">PBKDF2 · 250k</span>
+            <span class="badge p">Keyfile 2FA</span>
+            <span class="badge b">Batch encrypt</span>
+            <span class="badge b">Timestamp</span>
+            <span class="badge n">Memory-zeroed</span>
+            <span class="badge n">Offline · no server</span>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" id="t-enc" onclick="switchTab('enc')">⇩ ENCRYPT</button>
+            <button class="tab" id="t-dec" onclick="switchTab('dec')">⇪ DECRYPT</button>
+            <button class="tab" id="t-rec" onclick="switchTab('rec')">◷ RECENT</button>
+        </div>
+
+       
+        <div class="panel active" id="panel-enc">
+
+            <div class="drop" id="enc-drop" onclick="document.getElementById('enc-files').click()">
+                <input type="file" id="enc-files" multiple accept="image/*,video/*">
+                <span class="drop-icon">🔒</span>
+                <div class="drop-t">Drop images or videos here</div>
+                <div class="drop-s">multiple files supported · jpg png gif webp mp4 webm mov · or click to browse</div>
+            </div>
+
+            <div class="queue" id="enc-queue"></div>
+
+            <div class="divider"></div>
+
+            
+            <div class="field">
+                <div class="field-label">
+                    <span class="field-label-text"><span class="dot"></span> Passphrase</span>
+                    <div class="field-actions">
+                        <button class="fa-btn" onclick="generatePass()">🎲 generate</button>
+                        <button class="fa-btn" id="copy-pass-btn" onclick="copyPass()">📋 copy</button>
+                    </div>
+                </div>
+                <div class="inp-wrap">
+                    <input type="password" id="enc-pass" placeholder="Enter or generate a strong passphrase…" autocomplete="new-password" oninput="onPassInput()">
+                    <button class="inp-icon-btn" onclick="toggleVis('enc-pass',this)" title="Show/hide">👁</button>
+                </div>
+                <div class="strength-bar">
+                    <div class="strength-fill" id="str-fill"></div>
+                </div>
+                <div class="strength-row">
+                    <span class="strength-lbl" id="str-lbl">—</span>
+                    <span class="entropy-lbl" id="ent-lbl"></span>
+                </div>
+            </div>
+
+
+            <div class="keyfile-toggle" id="kf-enc-toggle" onclick="toggleSection('kf-enc')">
+                <span class="toggle-arrow" id="kf-enc-arrow">▶</span>
+                <span>Keyfile <span style="color:var(--muted);font-size:10px">(optional second factor)</span></span>
+            </div>
+            <div class="keyfile-body" id="kf-enc-body">
+                <div class="kf-info">Any file — a photo, a PDF, an audio file — becomes a second authentication
+                    factor.<br>Without BOTH the passphrase AND this exact file, decryption is impossible.<br>⚠ Lose the keyfile → lose access. Store it separately from the passphrase.
+                </div>
+                <input type="file" id="enc-kf-input" style="display:none" onchange="onKfSelect('enc')">
+                <button class="btn btn-secondary" style="margin-top:8px" onclick="document.getElementById('enc-kf-input').click()">Choose keyfile…</button>
+                <div class="kf-file-info" id="enc-kf-info">
+                    <span>🔑</span>
+                    <span class="kf-fname" id="enc-kf-name"></span>
+                    <button class="kf-clear" onclick="clearKf('enc')" title="Remove keyfile">✕</button>
+                </div>
+            </div>
+
+           
+            <div class="keyfile-toggle" id="meta-toggle" onclick="toggleSection('meta')">
+                <span class="toggle-arrow" id="meta-arrow">▶</span>
+                <span>Description <span style="color:var(--muted);font-size:10px">(optional, stored in plaintext header)</span></span>
+            </div>
+            <div class="keyfile-body" id="meta-body">
+                <div class="field" style="margin-top:8px">
+                    <textarea class="inp-ta" id="enc-desc" placeholder="Describe this file: who it's for, what it contains, expiry notes… (visible in header, not encrypted)"></textarea>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <button class="btn btn-primary" id="enc-btn" onclick="encryptAll()" disabled>
+    <span>🔐</span><span id="enc-btn-lbl">Encrypt &amp; Download All</span>
+  </button>
+
+            <div class="batch-prog" id="batch-prog">
+                <span class="bp-text" id="bp-text">Encrypting…</span>
+                <span class="bp-count" id="bp-count">0 / 0</span>
+            </div>
+
+            <div class="prog" id="enc-prog">
+                <div class="prog-track">
+                    <div class="prog-fill" id="enc-pf"></div>
+                </div>
+                <div class="prog-lbl" id="enc-pl"></div>
+            </div>
+
+            <div class="status" id="enc-status">
+                <span class="status-ico" id="enc-si"></span>
+                <span id="enc-st"></span>
+            </div>
+
+        </div>
+
+        
+        <div class="panel" id="panel-dec">
+
+            <div class="drop" id="dec-drop" onclick="document.getElementById('dec-file').click()">
+                <input type="file" id="dec-file" accept=".lol">
+                <span class="drop-icon">🔓</span>
+                <div class="drop-t">Drop a .lol file here</div>
+                <div class="drop-s">drop your encrypted .lol file or click to browse</div>
+            </div>
+
+            <div class="kf-file-info" id="dec-file-info" style="margin-top:10px">
+                <span id="dec-file-ico">🔒</span>
+                <span class="kf-fname" id="dec-file-name"></span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);flex-shrink:0" id="dec-file-size"></span>
+            </div>
+
+            <div class="notice" id="kf-notice">🔑 This .lol file was encrypted with a keyfile. You must provide the same
+                keyfile below.</div>
+
+            <div class="divider"></div>
+
+            <div class="field">
+                <div class="field-label">
+                    <span class="field-label-text"><span class="dot"></span> Passphrase</span>
+                </div>
+                <div class="inp-wrap">
+                    <input type="password" id="dec-pass" placeholder="Enter the passphrase used to encrypt…" autocomplete="off" oninput="updateDecBtn()">
+                    <button class="inp-icon-btn" onclick="toggleVis('dec-pass',this)">👁</button>
+                </div>
+            </div>
+
+            
+            <div class="keyfile-toggle" id="kf-dec-toggle" onclick="toggleSection('kf-dec')">
+                <span class="toggle-arrow" id="kf-dec-arrow">▶</span>
+                <span>Keyfile <span style="color:var(--muted);font-size:10px">(if used during encryption)</span></span>
+            </div>
+            <div class="keyfile-body" id="kf-dec-body">
+                <input type="file" id="dec-kf-input" style="display:none" onchange="onKfSelect('dec')">
+                <button class="btn btn-secondary" style="margin-top:8px" onclick="document.getElementById('dec-kf-input').click()">Choose keyfile…</button>
+                <div class="kf-file-info" id="dec-kf-info">
+                    <span>🔑</span>
+                    <span class="kf-fname" id="dec-kf-name"></span>
+                    <button class="kf-clear" onclick="clearKf('dec')" title="Remove keyfile">✕</button>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <button class="btn btn-primary" id="dec-btn" onclick="decryptFile()" disabled>
+    <span>🔓</span><span>Decrypt &amp; View</span>
+  </button>
+
+            <div class="prog" id="dec-prog">
+                <div class="prog-track">
+                    <div class="prog-fill" id="dec-pf"></div>
+                </div>
+                <div class="prog-lbl" id="dec-pl"></div>
+            </div>
+
+            <div class="status" id="dec-status">
+                <span class="status-ico" id="dec-si"></span>
+                <span id="dec-st"></span>
+            </div>
+
+            <div class="viewer" id="viewer">
+                <div class="viewer-hdr">decrypted content</div>
+                <div id="media-box"></div>
+                <div class="meta" id="dec-meta"></div>
+                <button class="btn btn-secondary" id="dl-dec-btn" onclick="downloadDecrypted()" style="display:none">
+      <span>⬇</span><span>Download Decrypted File</span>
+    </button>
+            </div>
+
+        </div>
+
+        
+        <div class="panel" id="panel-rec">
+            <div id="recent-list-wrap"></div>
+            <button class="btn btn-danger" id="clear-recent-btn" onclick="clearRecent()" style="margin-top:16px;display:none">
+    Clear History
+  </button>
+        </div>
+
+       
+        <div class="spec">
+            <div class="spec-t">// .lol v2 binary format specification</div>
+            <div class="hex-grid">
+                <div class="hb">
+                    <div class="hb-bytes">0x00–0x03</div>
+                    <div class="hb-label">Magic</div>
+                    <div class="hb-sub">"LOL!" · identifies file type</div>
+                </div>
+                <div class="hb">
+                    <div class="hb-bytes">0x04</div>
+                    <div class="hb-label">Version</div>
+                    <div class="hb-sub">0x02 · format version</div>
+                </div>
+                <div class="hb">
+                    <div class="hb-bytes">0x05–0x14</div>
+                    <div class="hb-label">PBKDF2 Salt</div>
+                    <div class="hb-sub">16 bytes · random per file · key derivation</div>
+                </div>
+                <div class="hb">
+                    <div class="hb-bytes">0x15–0x20</div>
+                    <div class="hb-label">AES-GCM IV</div>
+                    <div class="hb-sub">12 bytes · random nonce · never reused</div>
+                </div>
+                <div class="hb">
+                    <div class="hb-bytes">0x21–0x28</div>
+                    <div class="hb-label">Timestamp</div>
+                    <div class="hb-sub">uint64 big-endian · Unix ms · forensic trail</div>
+                </div>
+                <div class="hb">
+                    <div class="hb-bytes">0x29</div>
+                    <div class="hb-label">Flags</div>
+                    <div class="hb-sub">bit0: keyfile used · bits1-7: reserved</div>
+                </div>
+                <div class="hb">
+                    <div class="hb-bytes">0x2A–0x2B</div>
+                    <div class="hb-label">Desc length</div>
+                    <div class="hb-sub">uint16 BE · plaintext description byte count</div>
+                </div>
+                <div class="hb">
+                    <div class="hb-bytes">0x2C–N</div>
+                    <div class="hb-label">Description</div>
+                    <div class="hb-sub">UTF-8 · plaintext · may be 0 bytes</div>
+                </div>
+                <div class="hb" style="grid-column:1/-1">
+                    <div class="hb-bytes">N+1 – EOF</div>
+                    <div class="hb-label">AES-256-GCM ciphertext</div>
+                    <div class="hb-sub">Encrypted: [2B mime_len][mime][2B fn_len][filename][file bytes] · 16-byte auth
+                        tag · any tampering fails authentication</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+      
+const MAGIC = [0x4C,0x4F,0x4C,0x21];
+const VER   = 0x02;
+const ITERS = 250000;
+const RECENT_KEY = 'lol_vault_recent_v2';
+const MAX_RECENT = 20;
+
+let encFiles   = [];  
+let decLolFile = null;
+let decryptedBlob = null;
+let decryptedName = '';
+let encKfFile  = null;
+let decKfFile  = null;
+
+function switchTab(id) {
+  ['enc','dec','rec'].forEach(t => {
+    document.getElementById('t-'+t).classList.toggle('active', t===id);
+    document.getElementById('panel-'+t).classList.toggle('active', t===id);
+  });
+  if (id === 'rec') renderRecent();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey) {
+    if (e.key === 'e') { e.preventDefault(); switchTab('enc'); }
+    if (e.key === 'd') { e.preventDefault(); switchTab('dec'); }
+    if (e.key === 'r') { e.preventDefault(); switchTab('rec'); }
+  }
+});
+
+
+function toggleVis(id, btn) {
+  const el = document.getElementById(id);
+  const show = el.type === 'text';
+  el.type = show ? 'password' : 'text';
+  btn.textContent = show ? '👁' : '🙈';
+}
+
+function toggleSection(id) {
+  const body  = document.getElementById(id+'-body');
+  const arrow = document.getElementById(id+'-arrow');
+  const open  = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
+}
+
+function showStatus(prefix, type, icon, text) {
+  const el = document.getElementById(prefix+'-status');
+  el.className = 'status show '+type;
+  document.getElementById(prefix+'-si').textContent = icon;
+  document.getElementById(prefix+'-st').textContent = text;
+}
+
+function setProgress(prefix, pct, label) {
+  document.getElementById(prefix+'-prog').classList.add('show');
+  document.getElementById(prefix+'-pf').style.width = pct+'%';
+  document.getElementById(prefix+'-pl').textContent = label;
+}
+
+function hideProgress(prefix) {
+  document.getElementById(prefix+'-prog').classList.remove('show');
+}
+
+function fmtBytes(b) {
+  if (b < 1024) return b+' B';
+  if (b < 1048576) return (b/1024).toFixed(1)+' KB';
+  if (b < 1073741824) return (b/1048576).toFixed(1)+' MB';
+  return (b/1073741824).toFixed(2)+' GB';
+}
+
+function fmtDate(ms) {
+  return new Date(ms).toLocaleString(undefined,{dateStyle:'short',timeStyle:'short'});
+}
+
+function zero(arr) { if (arr?.fill) arr.fill(0); }
+
+
+function initDrop(zoneId, inputId) {
+  const z = document.getElementById(zoneId);
+  z.addEventListener('dragover', e => { e.preventDefault(); z.classList.add('over'); });
+  z.addEventListener('dragleave', () => z.classList.remove('over'));
+  z.addEventListener('drop', e => {
+    e.preventDefault(); z.classList.remove('over');
+    const dt = new DataTransfer();
+    [...e.dataTransfer.files].forEach(f => dt.items.add(f));
+    document.getElementById(inputId).files = dt.files;
+    document.getElementById(inputId).dispatchEvent(new Event('change'));
+  });
+}
+initDrop('enc-drop','enc-files');
+initDrop('dec-drop','dec-file');
+
+const WORDS = ['acid','arch','bark','beam','bird','bolt','bone','brim','bush','calm','cave','clay','cliff','coat','cold','core','cove','crow','cube','curl','dark','dawn','deck','deep','dew','dive','dove','draw','drum','dusk','echo','edge','fern','fire','fish','flag','flat','flint','flow','foam','fold','ford','fork','frost','gale','gate','glow','gold','gust','hail','hare','harp','hawk','haze','heat','herb','hill','hive','hook','horn','hull','hunt','jade','kite','lake','lamp','lark','lash','lava','leaf','lime','link','lion','lock','loom','lore','luna','lynx','maze','melt','mist','mole','moon','moor','moss','moth','musk','nest','node','nova','opal','orb','owl','palm','path','peak','pine','pith','pool','port','prism','pulse','quill','raft','rain','raven','reef','rift','ring','rock','root','rune','rush','rust','sage','salt','sand','seal','seed','shin','shore','silk','slab','slate','snow','soil','soot','spark','spin','spore','stag','star','stem','stone','storm','straw','surge','swift','teal','thorn','tide','tile','toad','trace','trail','tree','trout','tusk','vale','vault','vine','void','volt','wake','wave','weld','wild','wind','wing','wire','wolf','wood','wren','zinc','zone', '67mango'];
+
+function generatePass() {
+  const arr = new Uint32Array(5);
+  crypto.getRandomValues(arr);
+  const words = Array.from(arr).map(n => WORDS[n % WORDS.length]);
+  const num = (new Uint8Array(1), crypto.getRandomValues(new Uint8Array(1)))[0] % 90 + 10;
+  const pass = words.join('-') + '-' + num;
+  const el = document.getElementById('enc-pass');
+  el.type = 'text';
+  el.value = pass;
+  onPassInput();
+  showCopyFeedback(false);
+}
+
+function copyPass() {
+  const val = document.getElementById('enc-pass').value;
+  if (!val) return;
+  navigator.clipboard.writeText(val).then(() => showCopyFeedback(true));
+}
+
+function showCopyFeedback(copied) {
+  const btn = document.getElementById('copy-pass-btn');
+  btn.textContent = copied ? '✓ copied' : '📋 copy';
+  if (copied) setTimeout(() => btn.textContent = '📋 copy', 1800);
+}
+
+
+function onPassInput() {
+  const val = document.getElementById('enc-pass').value;
+  updateStrength(val);
+  updateEncBtn();
+}
+
+function updateStrength(p) {
+  let s = 0;
+  if (p.length >= 6)  s++;
+  if (p.length >= 12) s++;
+  if (p.length >= 20) s++;
+  if (/[A-Z]/.test(p) && /[a-z]/.test(p)) s++;
+  if (/[0-9]/.test(p)) s++;
+  if (/[^A-Za-z0-9]/.test(p)) s++;
+  const levels = [
+    {pct:'0%',    col:'transparent', lbl:'—'},
+    {pct:'16.6%', col:'#ff4757',     lbl:'very weak'},
+    {pct:'33.3%', col:'#ffa726',     lbl:'weak'},
+    {pct:'50%',   col:'#ffd740',     lbl:'moderate'},
+    {pct:'66.6%', col:'#66bb6a',     lbl:'strong'},
+    {pct:'83.3%', col:'#26c6da',     lbl:'very strong'},
+    {pct:'100%',  col:'#00e5b0',     lbl:'excellent'},
+  ];
+  const l = levels[Math.min(s, 6)];
+  document.getElementById('str-fill').style.cssText = `width:${l.pct};background:${l.col}`;
+  document.getElementById('str-lbl').textContent = p ? l.lbl : '—';
+  let charset = 0;
+  if (/[a-z]/.test(p)) charset += 26;
+  if (/[A-Z]/.test(p)) charset += 26;
+  if (/[0-9]/.test(p)) charset += 10;
+  if (/[^A-Za-z0-9]/.test(p)) charset += 32;
+  const bits = p.length ? Math.floor(p.length * Math.log2(charset || 1)) : 0;
+  document.getElementById('ent-lbl').textContent = p && bits ? `~${bits} bits` : '';
+}
+
+
+function onKfSelect(side) {
+  const input = document.getElementById(side+'-kf-input');
+  const f = input.files[0];
+  if (!f) return;
+  if (side === 'enc') encKfFile = f;
+  else decKfFile = f;
+  document.getElementById(side+'-kf-name').textContent = f.name + ' · ' + fmtBytes(f.size);
+  document.getElementById(side+'-kf-info').classList.add('show');
+  if (side === 'dec') updateDecBtn();
+}
+
+function clearKf(side) {
+  if (side === 'enc') { encKfFile = null; document.getElementById('enc-kf-input').value = ''; }
+  else                { decKfFile = null; document.getElementById('dec-kf-input').value = ''; }
+  document.getElementById(side+'-kf-info').classList.remove('show');
+}
+
+document.getElementById('enc-files').addEventListener('change', function() {
+  [...this.files].forEach(f => {
+    if (!encFiles.find(e => e.file.name === f.name && e.file.size === f.size))
+      encFiles.push({ file: f, status: 'pending', lolName: '' });
+  });
+  renderQueue();
+  updateEncBtn();
+});
+
+function renderQueue() {
+  const q = document.getElementById('enc-queue');
+  if (!encFiles.length) { q.innerHTML = ''; return; }
+  q.innerHTML = encFiles.map((e, i) => `
+    <div class="q-item ${e.status}" id="qi-${i}">
+      <div class="q-icon">${e.file.type.startsWith('video') ? '🎬' : '🖼️'}</div>
+      <span class="q-name" title="${e.file.name}">${e.file.name}</span>
+      <span class="q-size">${fmtBytes(e.file.size)}</span>
+      <span class="q-status ${e.status}">${e.status}</span>
+      ${e.status === 'pending' ? `<button class="q-del" onclick="removeFromQueue(${i})" title="Remove">✕</button>` : '<span style="width:22px"></span>'}
+    </div>`).join('');
+}
+
+function removeFromQueue(i) {
+  encFiles.splice(i, 1);
+  renderQueue();
+  updateEncBtn();
+}
+
+function updateEncBtn() {
+  const hasFiles = encFiles.some(e => e.status === 'pending');
+  const hasPass  = document.getElementById('enc-pass').value.length >= 4;
+  document.getElementById('enc-btn').disabled = !(hasFiles && hasPass);
+  const pending = encFiles.filter(e => e.status === 'pending').length;
+  document.getElementById('enc-btn-lbl').textContent =
+    pending > 1 ? `Encrypt & Download ${pending} Files` : 'Encrypt & Download .lol';
+}
+
+
+async function deriveKey(passphrase, kfBytes, salt) {
+  const enc = new TextEncoder();
+  let passBytes = enc.encode(passphrase);
+  let derivInput;
+
+  if (kfBytes && kfBytes.length) {
+    
+    const kfHash = new Uint8Array(await crypto.subtle.digest('SHA-256', kfBytes));
+  
+    derivInput = new Uint8Array(passBytes.length + 1 + kfHash.length);
+    derivInput.set(passBytes, 0);
+    derivInput[passBytes.length] = 0x00;
+    derivInput.set(kfHash, passBytes.length + 1);
+    zero(kfHash);
+  } else {
+    derivInput = new Uint8Array(passBytes);
+  }
+
+  const km = await crypto.subtle.importKey('raw', derivInput, 'PBKDF2', false, ['deriveKey']);
+  zero(derivInput);
+  zero(passBytes);
+
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt, iterations:ITERS, hash:'SHA-256' },
+    km,
+    { name:'AES-GCM', length:256 },
+    false, 
+    ['encrypt','decrypt']
+  );
+}
+
+
+function writeU64BE(view, offset, value) {
+  const hi = Math.floor(value / 0x100000000);
+  const lo = value >>> 0;
+  view.setUint32(offset, hi, false);
+  view.setUint32(offset + 4, lo, false);
+}
+
+function readU64BE(view, offset) {
+  const hi = view.getUint32(offset, false);
+  const lo = view.getUint32(offset + 4, false);
+  return hi * 0x100000000 + lo;
+}
+
+
+async function encryptAll() {
+  const pass   = document.getElementById('enc-pass').value;
+  const desc   = document.getElementById('enc-desc').value.trim();
+  const hasKf  = !!encKfFile;
+  const pending = encFiles.filter(e => e.status === 'pending');
+
+  if (!pending.length || !pass) return;
+
+  document.getElementById('enc-btn').disabled = true;
+  document.getElementById('enc-status').className = 'status';
+
+  let kfBytes = null;
+  if (hasKf) {
+    kfBytes = new Uint8Array(await encKfFile.arrayBuffer());
+  }
+
+  const bpWrap  = document.getElementById('batch-prog');
+  const bpText  = document.getElementById('bp-text');
+  const bpCount = document.getElementById('bp-count');
+  if (pending.length > 1) bpWrap.classList.add('show');
+
+  let done = 0, errors = 0;
+
+  for (let idx = 0; idx < encFiles.length; idx++) {
+    const entry = encFiles[idx];
+    if (entry.status !== 'pending') continue;
+
+    
+    entry.status = 'busy';
+    renderQueue();
+    bpText.textContent = `Encrypting "${entry.file.name}"…`;
+    bpCount.textContent = `${done+1} / ${pending.length}`;
+
+    try {
+      setProgress('enc', 10, 'Reading file…');
+      const fileBytes = new Uint8Array(await entry.file.arrayBuffer());
+
+      setProgress('enc', 25, 'Deriving key (PBKDF2 · 250k rounds)…');
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv   = crypto.getRandomValues(new Uint8Array(12));
+      const key  = await deriveKey(pass, kfBytes, salt);
+
+      setProgress('enc', 50, 'Building encrypted payload…');
+
+     
+      const enc = new TextEncoder();
+      const mimeB = enc.encode(entry.file.type || 'application/octet-stream');
+      const fnB   = enc.encode(entry.file.name);
+      const innerLen = 2 + mimeB.length + 2 + fnB.length + fileBytes.length;
+      const inner = new Uint8Array(innerLen);
+      let p = 0;
+      inner[p++] = (mimeB.length >> 8) & 0xff; inner[p++] = mimeB.length & 0xff;
+      inner.set(mimeB, p); p += mimeB.length;
+      inner[p++] = (fnB.length >> 8) & 0xff;   inner[p++] = fnB.length & 0xff;
+      inner.set(fnB, p); p += fnB.length;
+      inner.set(fileBytes, p);
+      zero(fileBytes);
+
+      setProgress('enc', 65, 'Encrypting with AES-256-GCM…');
+      const cipher = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv}, key, inner));
+      zero(inner);
+
+      setProgress('enc', 82, 'Assembling .lol container…');
+
+      const descB  = enc.encode(desc);
+      const hdrLen = 4+1+16+12+8+1+2+descB.length;
+      const total  = hdrLen + cipher.length;
+      const out    = new Uint8Array(total);
+      const view   = new DataView(out.buffer);
+      let off = 0;
+
+      MAGIC.forEach(b => out[off++] = b);
+      out[off++] = VER;
+      out.set(salt, off); off += 16;
+      out.set(iv,   off); off += 12;
+      writeU64BE(view, off, Date.now()); off += 8;
+      out[off++] = hasKf ? 0x01 : 0x00;                    
+      out[off++] = (descB.length >> 8) & 0xff;
+      out[off++] = descB.length & 0xff;
+      out.set(descB, off); off += descB.length;
+      out.set(cipher, off);
+
+      setProgress('enc', 95, 'Triggering download…');
+
+      const lolName = entry.file.name.replace(/\.[^.]+$/, '') + '.lol';
+      entry.lolName = lolName;
+      const blob = new Blob([out], {type:'application/octet-stream'});
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url; a.download = lolName; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 8000);
+
+      
+      addRecent({
+        lolName, origName: entry.file.name,
+        mimeType: entry.file.type,
+        origSize: entry.file.size,
+        encSize:  out.length,
+        timestamp: Date.now(),
+        desc: desc || '',
+        hasKeyfile: hasKf,
+      });
+
+      entry.status = 'done';
+      done++;
+    } catch(err) {
+      entry.status = 'err';
+      errors++;
+      console.error(err);
+    }
+
+    renderQueue();
+    await new Promise(r => setTimeout(r, 350)); 
+  }
+
+  zero(kfBytes);
+  hideProgress('enc');
+  bpWrap.classList.remove('show');
+
+  if (errors === 0) {
+    showStatus('enc', 'ok', '✓',
+      `${done} file${done>1?'s':''} encrypted & downloaded. Share .lol files freely — useless without the passphrase${hasKf?' + keyfile':''}.`);
+  } else {
+    showStatus('enc', 'err', '⚠',
+      `${done} succeeded, ${errors} failed. Check console for details.`);
+  }
+
+  setProgress('enc', 100, 'Complete');
+  setTimeout(() => hideProgress('enc'), 1500);
+  document.getElementById('enc-btn').disabled = false;
+  updateEncBtn();
+}
+
+document.getElementById('dec-file').addEventListener('change', function() {
+  const f = this.files[0];
+  if (!f) return;
+  decLolFile = f;
+  decryptedBlob = null;
+  document.getElementById('dec-file-name').textContent = f.name;
+  document.getElementById('dec-file-size').textContent = fmtBytes(f.size);
+  document.getElementById('dec-file-info').classList.add('show');
+  document.getElementById('viewer').classList.remove('show');
+  document.getElementById('dl-dec-btn').style.display = 'none';
+  document.getElementById('dec-status').className = 'status';
+  document.getElementById('kf-notice').classList.remove('show');
+  updateDecBtn();
+  peekFlags(f);
+});
+
+async function peekFlags(file) {
+  try {
+    const buf = await file.slice(0, 64).arrayBuffer();
+    const raw = new Uint8Array(buf);
+    if (raw[0]===0x4C && raw[1]===0x4F && raw[2]===0x4C && raw[3]===0x21 && raw[4]===VER) {
+      const flags = raw[41];
+      if (flags & 0x01) {
+        document.getElementById('kf-notice').classList.add('show');
+        const body = document.getElementById('kf-dec-body');
+        if (!body.classList.contains('open')) toggleSection('kf-dec');
+      }
+    }
+  } catch(e) {}
+}
+
+function updateDecBtn() {
+  const ready = decLolFile && document.getElementById('dec-pass').value.length >= 1;
+  document.getElementById('dec-btn').disabled = !ready;
+}
+
+async function decryptFile() {
+  const pass = document.getElementById('dec-pass').value;
+  if (!decLolFile || !pass) return;
+
+  document.getElementById('dec-btn').disabled = true;
+  document.getElementById('dec-status').className = 'status';
+  document.getElementById('viewer').classList.remove('show');
+  document.getElementById('dl-dec-btn').style.display = 'none';
+  decryptedBlob = null;
+
+  let kfBytes = null;
+  if (decKfFile) kfBytes = new Uint8Array(await decKfFile.arrayBuffer());
+
+  try {
+    setProgress('dec', 10, 'Reading .lol file…');
+    const raw  = new Uint8Array(await decLolFile.arrayBuffer());
+    const view = new DataView(raw.buffer);
+
+
+    if (raw[0]!==0x4C||raw[1]!==0x4F||raw[2]!==0x4C||raw[3]!==0x21)
+      throw new Error('Not a valid .lol file (magic header mismatch).');
+
+    const ver = raw[4];
+    let off = 5;
+    const salt = raw.slice(off, off+16); off += 16;
+    const iv   = raw.slice(off, off+12); off += 12;
+
+    let timestamp = null;
+    let flags     = 0;
+    let desc      = '';
+
+    if (ver === VER) { 
+      timestamp = readU64BE(view, off); off += 8;
+      flags     = raw[off++];
+      const descLen = (raw[off]<<8)|raw[off+1]; off += 2;
+      desc = new TextDecoder().decode(raw.slice(off, off+descLen)); off += descLen;
+    } else if (ver === 0x01) { 
+      const mLen = (raw[off]<<8)|raw[off+1]; off += 2;
+      const mime = new TextDecoder().decode(raw.slice(off,off+mLen)); off += mLen;
+      const fLen = (raw[off]<<8)|raw[off+1]; off += 2;
+      const fn   = new TextDecoder().decode(raw.slice(off,off+fLen)); off += fLen;
+      const ct   = raw.slice(off);
+
+      setProgress('dec', 30, 'Deriving key (PBKDF2 · 250k rounds)…');
+      const key = await deriveKey(pass, kfBytes, salt);
+      zero(kfBytes);
+
+      setProgress('dec', 65, 'Decrypting AES-256-GCM…');
+      let plain;
+      try { plain = await crypto.subtle.decrypt({name:'AES-GCM',iv}, key, ct); }
+      catch { throw new Error('Wrong passphrase or tampered file. AES-GCM authentication failed.'); }
+
+      renderMedia(plain, mime, fn, null, false, '');
+      return;
+    } else {
+      throw new Error(`Unknown .lol version: 0x${ver.toString(16)}`);
+    }
+
+    const hasKf = !!(flags & 0x01);
+    if (hasKf && !kfBytes) {
+      throw new Error('This file was encrypted with a keyfile. Please provide the same keyfile.');
+    }
+
+    const ciphertext = raw.slice(off);
+
+    setProgress('dec', 30, 'Deriving key (PBKDF2 · 250k rounds)…');
+    const key = await deriveKey(pass, kfBytes, salt);
+    zero(kfBytes);
+
+    setProgress('dec', 65, 'Decrypting AES-256-GCM…');
+    let plainBuf;
+    try { plainBuf = await crypto.subtle.decrypt({name:'AES-GCM',iv}, key, ciphertext); }
+    catch { throw new Error('Wrong passphrase or file has been tampered with. AES-GCM authentication failed.'); }
+
+    const plain = new Uint8Array(plainBuf);
+
+
+    let ip = 0;
+    const mimeLen = (plain[ip]<<8)|plain[ip+1]; ip += 2;
+    const mimeStr = new TextDecoder().decode(plain.slice(ip,ip+mimeLen)); ip += mimeLen;
+    const fnLen   = (plain[ip]<<8)|plain[ip+1]; ip += 2;
+    const fnStr   = new TextDecoder().decode(plain.slice(ip,ip+fnLen)); ip += fnLen;
+    const fileData = plain.slice(ip);
+
+    renderMedia(fileData.buffer, mimeStr, fnStr, timestamp, hasKf, desc);
+
+  } catch(err) {
+    hideProgress('dec');
+    zero(kfBytes);
+    showStatus('dec', 'err', '✗', err.message);
+    document.getElementById('dec-btn').disabled = false;
+    return;
+  }
+}
+
+function renderMedia(plainBuf, mime, fn, timestamp, hasKf, desc) {
+  setProgress('dec', 90, 'Rendering…');
+
+  const blob = new Blob([plainBuf], {type: mime});
+  const url  = URL.createObjectURL(blob);
+  decryptedBlob = blob;
+  decryptedName = fn;
+
+  const box = document.getElementById('media-box');
+  box.innerHTML = '';
+  let el;
+  if (mime.startsWith('video/')) {
+    el = document.createElement('video');
+    el.controls = true;
+  } else {
+    el = document.createElement('img');
+    el.alt = fn;
+  }
+  el.src = url;
+  box.appendChild(el);
+
+  const rows = [
+    ['filename', fn],
+    ['mime type', mime],
+    ['decrypted size', fmtBytes(plainBuf.byteLength || plainBuf.size || 0)],
+    ['encryption', `AES-256-GCM · PBKDF2-SHA256 · ${ITERS.toLocaleString()} iterations`],
+    ['keyfile 2FA', hasKf ? '✓ used' : 'not used'],
+  ];
+  if (timestamp) rows.push(['created', fmtDate(timestamp)]);
+  if (desc) rows.push(['description', desc]);
+
+  document.getElementById('dec-meta').innerHTML = rows.map(([k,v]) =>
+    `<span class="mk">${k}</span><span class="mv${k==='description'?' desc':''}">${v}</span>`
+  ).join('');
+
+  setProgress('dec', 100, 'Decrypted!');
+  setTimeout(() => hideProgress('dec'), 1400);
+  showStatus('dec', 'ok', '✓', `Decrypted successfully — "${fn}"`);
+  document.getElementById('viewer').classList.add('show');
+  document.getElementById('dl-dec-btn').style.display = 'flex';
+  document.getElementById('dec-btn').disabled = false;
+  updateDecBtn();
+}
+
+function downloadDecrypted() {
+  if (!decryptedBlob) return;
+  const url = URL.createObjectURL(decryptedBlob);
+  const a = document.createElement('a');
+  a.href = url; a.download = decryptedName; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+function getRecent() {
+  try { return JSON.parse(localStorage.getItem(RECENT_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function addRecent(entry) {
+  try {
+    const list = getRecent();
+    list.unshift(entry);
+    if (list.length > MAX_RECENT) list.splice(MAX_RECENT);
+    localStorage.setItem(RECENT_KEY, JSON.stringify(list));
+  } catch(e) {}
+}
+
+function clearRecent() {
+  localStorage.removeItem(RECENT_KEY);
+  renderRecent();
+}
+
+function renderRecent() {
+  const list = getRecent();
+  const wrap = document.getElementById('recent-list-wrap');
+  const clearBtn = document.getElementById('clear-recent-btn');
+
+  if (!list.length) {
+    wrap.innerHTML = `<div class="empty-state">
+      <span class="empty-ico">🗂</span>
+      <div class="empty-t">No recent files</div>
+      <div class="empty-s">Files you encrypt will appear here (metadata only)</div>
+    </div>`;
+    clearBtn.style.display = 'none';
+    return;
+  }
+
+  clearBtn.style.display = 'flex';
+  wrap.innerHTML = `<div class="recent-list">${list.map((e,i) => `
+    <div class="r-item">
+      <span class="r-name">${e.lolName}</span>
+      <span class="r-date">${fmtDate(e.timestamp)}</span>
+      <span class="r-orig">← ${e.origName} · ${fmtBytes(e.origSize)} → ${fmtBytes(e.encSize)}</span>
+      <div class="r-badges" style="grid-column:1/-1">
+        <span class="r-badge">${e.mimeType || '—'}</span>
+        ${e.hasKeyfile ? '<span class="r-badge kf">🔑 keyfile</span>' : ''}
+      </div>
+      ${e.desc ? `<div class="r-desc">"${e.desc}"</div>` : ''}
+    </div>`).join('')}</div>`;
+}
+    </script>
+</body>
+
+</html>
