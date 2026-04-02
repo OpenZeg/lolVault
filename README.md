@@ -7,11 +7,9 @@ Encrypt images, videos, and any files locally — no server, no tracking, no dat
 
 Strong, simple, and fully auditable.
 
----
-
 ### Try It
-- **Online demo**: [style.zeg.com.au/lol](https://style.zeg.com.au/lol)  
-- **Recommended**: Download from GitHub and run offline for maximum security.
+- **Online demo**: [style.zeg.com.au/lol](https://style.zeg.com.au/lol)
+- **Strongly recommended**: Download from GitHub and run it offline for maximum security.
 
 ### Features
 - AES-256-GCM authenticated encryption
@@ -23,9 +21,9 @@ Strong, simple, and fully auditable.
 - Completely client-side & offline
 
 ### Security Note
-This tool is only as strong as your passphrase and keyfile handling. Always use a strong unique passphrase and keep your keyfile separate.
+This tool is only as strong as your passphrase + keyfile handling. Use a strong unique passphrase and keep the keyfile separate from the encrypted files.
 
 ---
 
 **License**  
-Apache License 2.0 (with credit requested)
+Apache License 2.0 (credit appreciated)
